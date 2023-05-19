@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Description from "../components/Description"
 
-const PxToREMPage = () => {
+const PxToPercentagePage = () => {
   const [baseUnit, setBaseUnit] = useState(1)
   const [unitOne, setUnitOne] = useState("")
   const [unitTwo, setUnitTwo] = useState("")
@@ -93,4 +93,4 @@ const PxToREMPage = () => {
     </div>
   )
 }
-export default PxToREMPage
+export default PxToPercentagePage

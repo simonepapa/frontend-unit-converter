@@ -20,6 +20,12 @@
   top: 50%;
   right: 10px;
 }
+.clipboard-toast {
+  background-color: rgb(148 163 184) !important;
+  right: 16px;
+  bottom: 16px;
+}
+
 @media (min-width: 768px) {
   .navbar-collapse ul {
     width: 100vw !important;

@@ -1,12 +1,20 @@
 "use client"
 
-import { useState } from "react"
+const css = require("css")
+import { useState, useEffect } from "react"
 import Description from "../components/Description"
+import { Button, Toast } from "flowbite-react"
+import { VscChromeClose } from "react-icons/vsc"
 
-const PxToREMPage = () => {
-  const [baseUnit, setBaseUnit] = useState(Math.max(document.documentElement.clientWidth || 0))
+const PxToVWPage = () => {
+  const [baseUnit, setBaseUnit] = useState(
+    Math.max(document.documentElement.clientWidth || 0)
+  )
   const [unitOne, setUnitOne] = useState("")
   const [unitTwo, setUnitTwo] = useState("")
+  const [CSS, setCSS] = useState("")
+  const [convertedCSS, setConvertedCSS] = useState("")
+  const [toast, setToast] = useState(false)
 
   const onChangeBase = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBaseUnit(parseInt(e.target.value))
@@ -17,7 +25,8 @@ const PxToREMPage = () => {
     setUnitOne(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
       const val = (
-        parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit * 100
+        (parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit) *
+        100
       ).toFixed(3)
       setUnitTwo(val.toString())
     } else {
@@ -28,16 +37,76 @@ const PxToREMPage = () => {
     setUnitTwo(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
       const val = (
-        parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit / 100
+        (parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit) /
+        100
       ).toFixed(3)
       setUnitOne(val.toString())
     } else {
       setUnitOne("")
     }
   }
+  const readCSS = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCSS(e.target.value)
+  }
+  const convertCSS = () => {
+    try {
+      const parsedCSS = css.parse(".contact-progress {width: 82vw;height:")
+      parsedCSS.stylesheet.rules.forEach((rule: any = {}) => {
+        // For each rule, apply it only if it includes "px" and is not one of the three listed
+        rule.declarations.forEach((declaration: any = {}) => {
+          if (
+            declaration.property !== "border-radius" &&
+            declaration.property !== "border" &&
+            declaration.property !== "box-shadow" &&
+            declaration.value.includes("px")
+          ) {
+            // Get array of substrings in order to correctly convert shorthand properties like padding, margin ecc
+            const arrayOfSubstrings = declaration.value.match(/\b(\w+)\b/g)
+            // For each substring, if it ends with px then convert it to vw
+            for (let i = 0; i < arrayOfSubstrings.length; i++) {
+              if (arrayOfSubstrings[i].endsWith("px")) {
+                const split = arrayOfSubstrings[i].match(
+                  /^([-.\d]+(?:\.\d+)?)(.*)$/
+                )
+                split[1] = ((split[1] / baseUnit) * 100).toFixed(3)
+                arrayOfSubstrings[i] = split[1].trim() + "vw"
+              }
+            }
+            // Convert the array of strings back to a single string
+            declaration.value = arrayOfSubstrings.join(" ")
+          }
+        })
+      })
+      setConvertedCSS(css.stringify(parsedCSS))
+    } catch (error) {
+      // TO DO: add a toast
+      console.log(error);
+    }
+  }
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(convertedCSS)
+    setToast(true)
+    setTimeout(() => {
+      setToast(false)
+    }, 5000)
+  }
 
   return (
     <div>
+      <Toast
+        className={
+          "flex justify-between fixed clipboard-toast " +
+          (toast ? "opacity-100" : "opacity-0")
+        }
+      >
+        <div className="ml-3 font-normal text-white">Copied to clipboard.</div>
+        <VscChromeClose
+          onClick={() => {
+            setToast(false)
+          }}
+          className="text-white w-6 h-6 hover:cursor-pointer"
+        />
+      </Toast>
       <Description
         title="PX to VW Converter"
         description="VW (Viewport Width) is a CSS unite relative to 1% of the width of the viewport."
@@ -90,7 +159,42 @@ const PxToREMPage = () => {
           </div>
         </div>
       </div>
+      <div className="mt-10 mb-8 w-fit">
+        <h2 className="text-xl font-bold">Whole code converter</h2>
+        <p className="max-w-3xl mt-1 mb-2">
+          Paste your code here to convert all the properties' units from PX to
+          VW (note that <i>box-shadow</i> and <i>border</i> property remain
+          unchanged)
+        </p>
+        <textarea
+          id="converter"
+          name="converter"
+          value={CSS}
+          onChange={readCSS}
+          className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 rounded-lg p-2.5 text-lg p-4 max-w-3xl w-full"
+          style={{ height: "200px" }}
+        />
+        <Button onClick={convertCSS} className="mt-4 ms-auto">
+          CONVERT
+        </Button>
+        <textarea
+          id="converterResult"
+          name="converterResult"
+          value={convertedCSS}
+          readOnly
+          className="block w-full border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 rounded-lg p-2.5 text-lg p-4 max-w-3xl w-full mt-8"
+          style={{ height: "200px", resize: "none" }}
+        />
+        <Button
+          onClick={() => {
+            copyToClipboard()
+          }}
+          className="mt-4 ms-auto"
+        >
+          Copy to clipboard
+        </Button>
+      </div>
     </div>
   )
 }
-export default PxToREMPage
+export default PxToVWPage

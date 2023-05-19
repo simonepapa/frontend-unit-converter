@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Description from "../components/Description"
 
-const PxToREMPage = () => {
+const PxToEMPage = () => {
   const [baseUnit, setBaseUnit] = useState(16)
   const [unitOne, setUnitOne] = useState("16")
   const [unitTwo, setUnitTwo] = useState("1")
@@ -93,4 +93,4 @@ const PxToREMPage = () => {
     </div>
   )
 }
-export default PxToREMPage
+export default PxToEMPage
