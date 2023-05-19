@@ -1,20 +1,32 @@
 "use client"
 
-import ActiveLink from './ActiveLink'
+import ActiveLink from "./ActiveLink"
 import { Navbar } from "flowbite-react"
 
 const Header = () => {
   return (
-    <Navbar fluid={true} rounded={true} className="bg-slate-100 md:flex md:justify-center">
+    <Navbar fluid={true} rounded={true} className="navbar">
       <Navbar.Toggle />
-      <Navbar.Collapse>
-        <ActiveLink href="/" style="text-lg">
-          Home
-        </ActiveLink>
-        <ActiveLink href="/px-to-rem" style="text-lg">PX to REM</ActiveLink>
-        <ActiveLink href="/px-to-em" style="text-lg">PX to EM</ActiveLink>
-        <ActiveLink href="/px-to-vw" style="text-lg">PX to VW</ActiveLink>
-        <ActiveLink href="/px-to-percentage" style="text-lg">PX to %</ActiveLink>
+      <Navbar.Collapse className="navbar-collapse">
+        <li>
+          <ActiveLink href="/" style="text-lg">
+            Home
+          </ActiveLink>
+        </li>
+        <li className="flex flex-col md:flex-row">
+          <ActiveLink href="/px-to-rem" style="text-lg md:px-4">
+            PX to REM
+          </ActiveLink>
+          <ActiveLink href="/px-to-em" style="text-lg md:px-4">
+            PX to EM
+          </ActiveLink>
+          <ActiveLink href="/px-to-vw" style="text-lg md:px-4">
+            PX to VW
+          </ActiveLink>
+          <ActiveLink href="/px-to-percentage" style="text-lg md:px-4 md:me-5">
+            PX to %
+          </ActiveLink>
+        </li>
       </Navbar.Collapse>
     </Navbar>
   )

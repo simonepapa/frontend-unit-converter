@@ -17,9 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} bg-slate-100`}>
+      <body className={`${roboto.className} bg-slate-50`}>
         <Header />
-        <main className="flex justify-center">{children}</main>
+        <main className="md:w-3/6 mx-5 md:mx-auto mt-8">{children}</main>
       </body>
     </html>
   )
