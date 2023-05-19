@@ -1,6 +1,6 @@
 export interface Props {
   title: string
-  description: string
+  description: React.ReactNode
 }
 
 const Description = (props: Props) => {

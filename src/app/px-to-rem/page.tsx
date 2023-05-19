@@ -40,7 +40,7 @@ const PxToREMPage = () => {
     <div>
       <Description
         title="PX to REM Converter"
-        description="REM (Root EM) is a CSS unite relative to the font size of the root element. By default, 1rem equals 16px."
+        description="REM (Root EM) is a CSS unite relative to the fontsize of the root element. By default, 1rem equals 16px."
       />
       <div className="flex flex-col items-center mt-5">
         <div>
