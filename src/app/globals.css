@@ -11,17 +11,14 @@
 .navbar-collapse ul {
   width: 100vw !important;
 }
-.unit-input input {
-  text-align: center;
-  font-size: 1.125rem;
+.unit-input {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
 .unit-label {
   opacity: 0.75;
   top: 50%;
-  left: 10px;
-  transform: translateY(-50%)
+  right: 10px;
 }
 @media (min-width: 768px) {
   .navbar-collapse ul {
