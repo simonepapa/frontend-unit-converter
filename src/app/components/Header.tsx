@@ -5,7 +5,7 @@ import { Navbar } from "flowbite-react"
 
 const Header = () => {
   return (
-    <Navbar fluid={true} rounded={true} className="navbar">
+    <Navbar fluid={true} rounded={true}>
       <Navbar.Toggle />
       <Navbar.Collapse className="navbar-collapse">
         <li>

@@ -81,7 +81,6 @@ const PxToVWPage = () => {
       })
       setConvertedCSS(css.stringify(parsedCSS))
     } catch (error) {
-      // TO DO: add a toast
       toast.error("Invalid CSS. Check for errors.")
     }
   }
