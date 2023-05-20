@@ -9,7 +9,7 @@ const FooterComponent = () => {
       <div className="w-full">
         <div className="w-full flex items-center justify-between">
           <Footer.Copyright by="Simone Papa" year={new Date().getFullYear()} />
-          <div className="mt-4 flex space-x-6 mt-0 justify-center">
+          <div className="flex space-x-6 mt-0 justify-center">
             <Footer.Icon href="https://github.com/simonepapa" target="_blank" icon={BsGithub} />
           </div>
         </div>
