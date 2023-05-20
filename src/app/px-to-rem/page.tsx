@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import Description from "../components/Description"
+import { checkIfDecimal } from "../utils/calcHelper"
+
 const PxToREMPage = () => {
   const [baseUnit, setBaseUnit] = useState(16)
   const [unitOne, setUnitOne] = useState("16")
@@ -9,21 +11,16 @@ const PxToREMPage = () => {
 
   const onChangeBase = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBaseUnit(parseInt(e.target.value))
-    setUnitOne("")
-    setUnitTwo("")
+    // Proportionally change the value of the first unit
+    const unitOneValue = checkIfDecimal(parseFloat(unitOne) * parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit)
+    unitOne !== "" ? setUnitOne(unitOneValue.toString()) : ""
   }
   const onChangeOne = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitOne(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      let val = (
+      const val = checkIfDecimal((
         parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit
-      )
-      // If number has decimal places, then round it to three decimal, else delete all decimal places
-      if (val % 1 !== 0) {
-        val = parseFloat(val.toFixed(3))
-      } else {
-        val = parseFloat(val.toFixed(0))
-      }
+      ))
       setUnitTwo(val.toString())
     } else {
       setUnitTwo("")
@@ -32,14 +29,9 @@ const PxToREMPage = () => {
   const onChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitTwo(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      let val = (
+      const val = checkIfDecimal((
         parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit
-      )
-      if (val % 1 !== 0) {
-        val = parseFloat(val.toFixed(3))
-      } else {
-        val = parseFloat(val.toFixed(0))
-      }
+      ))
       setUnitOne(val.toString())
     } else {
       setUnitOne("")

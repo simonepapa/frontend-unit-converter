@@ -1,10 +1,11 @@
 "use client"
 
 const css = require("css")
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Description from "../components/Description"
 import { Button, Toast } from "flowbite-react"
 import { VscChromeClose } from "react-icons/vsc"
+import { checkIfDecimal } from "../utils/calcHelper"
 
 const PxToVWPage = () => {
   const [baseUnit, setBaseUnit] = useState(
@@ -18,21 +19,17 @@ const PxToVWPage = () => {
 
   const onChangeBase = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBaseUnit(parseInt(e.target.value))
-    setUnitOne("")
-    setUnitTwo("")
+    // Proportionally change the value of the first unit
+    const unitOneValue = checkIfDecimal(parseFloat(unitOne) * parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit)
+    unitOne !== "" ? setUnitOne(unitOneValue.toString()) : ""
   }
   const onChangeOne = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitOne(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      let val = (
+      const val = checkIfDecimal((
         (parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit) *
         100
-      )
-      if (val % 1 !== 0) {
-        val = parseFloat(val.toFixed(3))
-      } else {
-        val = parseFloat(val.toFixed(0))
-      }
+      ))
       setUnitTwo(val.toString())
     } else {
       setUnitTwo("")
@@ -41,15 +38,10 @@ const PxToVWPage = () => {
   const onChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitTwo(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      let val = (
+      const val = checkIfDecimal((
         (parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit) /
         100
-      )
-      if (val % 1 !== 0) {
-        val = parseFloat(val.toFixed(3))
-      } else {
-        val = parseFloat(val.toFixed(0))
-      }
+      ))
       setUnitOne(val.toString())
     } else {
       setUnitOne("")
