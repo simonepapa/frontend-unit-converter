@@ -3,8 +3,9 @@
 const css = require("css")
 import { useState } from "react"
 import Description from "../components/Description"
-import { Button, Toast } from "flowbite-react"
-import { VscChromeClose } from "react-icons/vsc"
+import { Button } from "flowbite-react"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { checkIfDecimal } from "../utils/calcHelper"
 
 const PxToVWPage = () => {
@@ -15,7 +16,6 @@ const PxToVWPage = () => {
   const [unitTwo, setUnitTwo] = useState("")
   const [CSS, setCSS] = useState("")
   const [convertedCSS, setConvertedCSS] = useState("")
-  const [toast, setToast] = useState(false)
 
   const onChangeBase = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBaseUnit(parseInt(e.target.value))
@@ -82,33 +82,17 @@ const PxToVWPage = () => {
       setConvertedCSS(css.stringify(parsedCSS))
     } catch (error) {
       // TO DO: add a toast
-      console.log(error);
+      toast.error("Invalid CSS. Check for errors.")
     }
   }
   const copyToClipboard = () => {
     navigator.clipboard.writeText(convertedCSS)
-    setToast(true)
-    setTimeout(() => {
-      setToast(false)
-    }, 5000)
+    toast.success("Copied to clipboard")
   }
 
   return (
     <div>
-      <Toast
-        className={
-          "flex justify-between fixed clipboard-toast " +
-          (toast ? "opacity-100" : "opacity-0")
-        }
-      >
-        <div className="ml-3 font-normal text-white">Copied to clipboard.</div>
-        <VscChromeClose
-          onClick={() => {
-            setToast(false)
-          }}
-          className="text-white w-6 h-6 hover:cursor-pointer"
-        />
-      </Toast>
+      <ToastContainer />
       <Description
         title="PX to VW Converter"
         description="VW (Viewport Width) is a CSS unite relative to 1% of the width of the viewport."
