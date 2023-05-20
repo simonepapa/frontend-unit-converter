@@ -5,7 +5,7 @@
  * @param {number} x The number to check.
  * @return {number} x The number with the correct decimal places.
  */
-export function checkIfDecimal(x : number): number {
+export const checkIfDecimal = (x : number): number => {
   if (x % 1 !== 0) {
     x = parseFloat(x.toFixed(3))
   } else {

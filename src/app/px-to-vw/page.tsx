@@ -4,13 +4,13 @@ const css = require("css")
 import { useState } from "react"
 import Description from "../components/Description"
 import { Button } from "flowbite-react"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import { checkIfDecimal } from "../utils/calcHelper"
 
 const PxToVWPage = () => {
   const [baseUnit, setBaseUnit] = useState(
-    Math.max(document.documentElement.clientWidth || 0)
+    Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
   )
   const [unitOne, setUnitOne] = useState("")
   const [unitTwo, setUnitTwo] = useState("")
@@ -20,16 +20,18 @@ const PxToVWPage = () => {
   const onChangeBase = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBaseUnit(parseInt(e.target.value))
     // Proportionally change the value of the first unit
-    const unitOneValue = checkIfDecimal(parseFloat(unitOne) * parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit)
+    const unitOneValue = checkIfDecimal(
+      (parseFloat(unitOne) * parseFloat(e.target.value.replace(/,/g, "."))) /
+        baseUnit
+    )
     unitOne !== "" ? setUnitOne(unitOneValue.toString()) : ""
   }
   const onChangeOne = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitOne(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      const val = checkIfDecimal((
-        (parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit) *
-        100
-      ))
+      const val = checkIfDecimal(
+        (parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit) * 100
+      )
       setUnitTwo(val.toString())
     } else {
       setUnitTwo("")
@@ -38,10 +40,9 @@ const PxToVWPage = () => {
   const onChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitTwo(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      const val = checkIfDecimal((
-        (parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit) /
-        100
-      ))
+      const val = checkIfDecimal(
+        (parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit) / 100
+      )
       setUnitOne(val.toString())
     } else {
       setUnitOne("")
@@ -111,6 +112,20 @@ const PxToVWPage = () => {
               onChange={onChangeBase}
               className="block w-16 border disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 text-lg text-center p-0 ms-2"
             />
+            <Button
+              size="xs"
+              onClick={() => {
+                setBaseUnit(
+                  Math.max(
+                    document.documentElement.clientWidth || 0,
+                    window.innerWidth || 0
+                  )
+                )
+              }}
+              className="ms-2"
+            >
+              Get current viewport
+            </Button>
           </div>
         </div>
         <div className="flex flex-col md:flex-row justify-center items-center">
