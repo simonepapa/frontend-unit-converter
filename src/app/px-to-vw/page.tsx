@@ -9,9 +9,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { checkIfDecimal } from "../utils/calcHelper"
 
 const PxToVWPage = () => {
-  const [baseUnit, setBaseUnit] = useState(
-    Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-  )
+  const [baseUnit, setBaseUnit] = useState(0)
   const [unitOne, setUnitOne] = useState("")
   const [unitTwo, setUnitTwo] = useState("")
   const [CSS, setCSS] = useState("")
@@ -162,8 +160,8 @@ const PxToVWPage = () => {
       <div className="mt-10 mb-8 w-fit">
         <h2 className="text-xl font-bold">Whole code converter</h2>
         <p className="max-w-3xl mt-1 mb-2">
-          Paste your code here to convert all the properties' units from PX to
-          VW (note that <i>box-shadow</i> and <i>border</i> property remain
+          Paste your code here to convert all the properties&apos; units from PX
+          to VW (note that <i>box-shadow</i> and <i>border</i> property remain
           unchanged)
         </p>
         <textarea
