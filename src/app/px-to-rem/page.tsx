@@ -15,9 +15,15 @@ const PxToREMPage = () => {
   const onChangeOne = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitOne(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      const val = (
+      let val = (
         parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit
-      ).toFixed(3)
+      )
+      // If number has decimal places, then round it to three decimal, else delete all decimal places
+      if (val % 1 !== 0) {
+        val = parseFloat(val.toFixed(3))
+      } else {
+        val = parseFloat(val.toFixed(0))
+      }
       setUnitTwo(val.toString())
     } else {
       setUnitTwo("")
@@ -26,9 +32,14 @@ const PxToREMPage = () => {
   const onChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitTwo(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      const val = (
+      let val = (
         parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit
-      ).toFixed(3)
+      )
+      if (val % 1 !== 0) {
+        val = parseFloat(val.toFixed(3))
+      } else {
+        val = parseFloat(val.toFixed(0))
+      }
       setUnitOne(val.toString())
     } else {
       setUnitOne("")

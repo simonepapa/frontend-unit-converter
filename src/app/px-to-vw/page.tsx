@@ -24,10 +24,15 @@ const PxToVWPage = () => {
   const onChangeOne = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitOne(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      const val = (
+      let val = (
         (parseFloat(e.target.value.replace(/,/g, ".")) / baseUnit) *
         100
-      ).toFixed(3)
+      )
+      if (val % 1 !== 0) {
+        val = parseFloat(val.toFixed(3))
+      } else {
+        val = parseFloat(val.toFixed(0))
+      }
       setUnitTwo(val.toString())
     } else {
       setUnitTwo("")
@@ -36,10 +41,15 @@ const PxToVWPage = () => {
   const onChangeTwo = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUnitTwo(e.target.value)
     if (!isNaN(parseFloat(e.target.value.replace(/,/g, ".")))) {
-      const val = (
+      let val = (
         (parseFloat(e.target.value.replace(/,/g, ".")) * baseUnit) /
         100
-      ).toFixed(3)
+      )
+      if (val % 1 !== 0) {
+        val = parseFloat(val.toFixed(3))
+      } else {
+        val = parseFloat(val.toFixed(0))
+      }
       setUnitOne(val.toString())
     } else {
       setUnitOne("")
@@ -50,7 +60,7 @@ const PxToVWPage = () => {
   }
   const convertCSS = () => {
     try {
-      const parsedCSS = css.parse(".contact-progress {width: 82vw;height:")
+      const parsedCSS = css.parse(CSS)
       parsedCSS.stylesheet.rules.forEach((rule: any = {}) => {
         // For each rule, apply it only if it includes "px" and is not one of the three listed
         rule.declarations.forEach((declaration: any = {}) => {
